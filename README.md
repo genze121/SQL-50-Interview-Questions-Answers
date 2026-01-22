@@ -5,7 +5,6 @@
 
 > SQL Mostly Asked Interview Question Set of 50.
 
-
 ```sql
 
 create database sql_prep_50_question;
@@ -20,7 +19,7 @@ CREATE TABLE Worker (
 	DEPARTMENT CHAR(25)
 );
 
-INSERT INTO Worker 
+INSERT INTO Worker
 	(WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES
 		(001, 'Monika', 'Arora', 100000, '14-02-20 09.00.00', 'HR'),
 		(002, 'Niharika', 'Verma', 80000, '14-06-11 09.00.00', 'Admin'),
@@ -40,14 +39,14 @@ CREATE TABLE Bonus (
         ON DELETE CASCADE
 );
 
-INSERT INTO Bonus 
+INSERT INTO Bonus
 	(WORKER_REF_ID, BONUS_AMOUNT, BONUS_DATE) VALUES
 		(001, 5000, '16-02-20'),
 		(002, 3000, '16-06-11'),
 		(003, 4000, '16-02-20'),
 		(001, 4500, '16-02-20'),
 		(002, 3500, '16-06-11');
-        
+
 CREATE TABLE Title (
 	WORKER_REF_ID INT,
 	WORKER_TITLE CHAR(25),
@@ -57,7 +56,7 @@ CREATE TABLE Title (
         ON DELETE CASCADE
 );
 
-INSERT INTO Title 
+INSERT INTO Title
 	(WORKER_REF_ID, WORKER_TITLE, AFFECTED_FROM) VALUES
  (001, 'Manager', '2016-02-20 00:00:00'),
  (002, 'Executive', '2016-06-11 00:00:00'),
@@ -67,19 +66,19 @@ INSERT INTO Title
  (007, 'Executive', '2016-06-11 00:00:00'),
  (006, 'Lead', '2016-06-11 00:00:00'),
  (003, 'Lead', '2016-06-11 00:00:00');
- 
+
  -- 1) check worker table
  select * from worker;
- 
+
 -- 2) check title table
  select * from title;
- 
+
 -- 3) check bonus table
  select * from bonus;
- 
- 
+
+
  -- Q-1. Write an SQL query to fetch “FIRST_NAME” from Worker table using the alias name as <WORKER_NAME>.
- 
+
  select first_name as WORKER_NAME from worker;
 
 -- Q-2. Write an SQL query to fetch “FIRST_NAME” from Worker table in upper case.
@@ -123,7 +122,7 @@ select concat(first_name, ' ', last_name) as COMPLETE_NAME from worker;
 
 select * from worker order by first_name asc;
 
--- Q-12. Write an SQL query to print all Worker details from the Worker table order by 
+-- Q-12. Write an SQL query to print all Worker details from the Worker table order by
 -- FIRST_NAME Ascending and DEPARTMENT Descending.
 
 select * from worker order by first_name asc, department desc;
@@ -180,7 +179,7 @@ select department, count(department) as dept_count from worker group by departme
 -- Q-24. Write an SQL query to print details of the Workers who are also Managers.
 
 select * from worker where worker_id in (select worker_ref_id from title where worker_title = 'Manager');
- 
+
 -- Q-25. Write an SQL query to fetch number (more than 1) of same titles in the ORG of different types.
 
 select worker_title, count(worker_title) as org_count from title group by worker_title order by worker_title;
@@ -189,7 +188,7 @@ select worker_title, count(worker_title) as org_count from title group by worker
 
 select * from worker where worker_id%2=0;
 
--- Q-27. Write an SQL query to show only even rows from a table. 
+-- Q-27. Write an SQL query to show only even rows from a table.
 
 select * from worker where worker_id%2!=0;
 
@@ -223,7 +222,7 @@ select * from worker order by salary desc limit 4,1;
 
 -- Q-34. Write an SQL query to determine the 5th highest salary without using LIMIT keyword.
 
-select * from worker w1 where 4 = 
+select * from worker w1 where 4 =
 (select count(distinct(w2.salary)) from worker w2 where w2.salary >= w1.salary);
 
 -- Q-35. Write an SQL query to fetch the list of employees with the same salary.
@@ -254,7 +253,7 @@ select * from worker where worker_id <= (select count(worker_id)/2 from worker);
 
 -- Q-40. Write an SQL query to fetch the departments that have less than 4 people in it.
 
-select department, count(department) as DEPARTMENT_COUNT 
+select department, count(department) as DEPARTMENT_COUNT
 from worker group by department
 having DEPARTMENT_COUNT < 4
 order by department;
@@ -312,6 +311,59 @@ order by department;
 select first_name, salary from worker where salary = 
 (select max(salary) from worker);
 select current_user();
+
+-- Q-41. Write an SQL query to show all departments along with the number of people in there.
+
+select department, count(department) as DEPARTMENT_COUNT from worker
+group by department
+order by department;
+
+-- Q-42. Write an SQL query to show the last record from a table.
+
+select * from worker where worker_id =
+(select max(worker_id) from worker);
+
+-- Q-43. Write an SQL query to fetch the first row of a table.
+
+select * from worker where worker_id =
+(select min(worker_id) from worker);
+
+-- Q-44. Write an SQL query to fetch the last five records from a table.
+
+(select * from worker order by worker_id desc limit 5) order by worker_id;
+
+-- Q-45. Write an SQL query to print the name of employees having the highest salary in each department.
+
+select w1.first_name, w1.salary, w1.department from
+(select department, max(salary) as max_sal from worker group by department) t1
+inner join worker w1 on w1.department = t1.department and w1.salary = t1.max_sal;
+
+-- Q-46. Write an SQL query to fetch three max salaries from a table using co-related subquery
+
+select * from worker w1 where 2 =
+(select count(distinct(w2.salary)) from worker w2 where w2.salary >= w1.salary);
+
+-- Q-47. Write an SQL query to fetch three min salaries from a table using co-related subquery
+
+select * from worker w1 where 2 =
+(select count(distinct(w2.salary)) from worker w2 where w2.salary <= w1.salary);
+
+-- Q-48. Write an SQL query to fetch nth max salaries from a table.
+
+-- Here n can be 1, 2, 3, 4 and so on.
+select * from worker where n =
+(select count(distinct(w2.salary)) from worker w2 where w2.salary >= w1.salary);
+
+-- Q-49. Write an SQL query to fetch departments along with the total salaries paid for each of them.
+
+select department, sum(salary) as MAX_SUM from worker
+group by department
+order by department;
+
+-- Q-50. Write an SQL query to fetch the names of workers who earn the highest salary.
+
+select first_name, salary from worker where salary =
+(select max(salary) from worker);
 
 
 ```
