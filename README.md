@@ -1,7 +1,6 @@
-## SQL - 50 Interview Questions.
+## 🚀 SQL - 50 Interview Questions.
  
  ![Top-50-SQL-Interview-Questions](https://github.com/user-attachments/assets/6f52f711-8d76-4999-9ad0-2b7ab17bf0ee)
-
 
 > SQL Mostly Asked Interview Question Set of 50.
 
