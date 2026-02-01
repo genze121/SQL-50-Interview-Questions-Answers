@@ -1,5 +1,6 @@
 ## 🚀 SQL - 50 Interview Questions.
 
+[!Note]
 > SQL Mostly Asked Interview Question Set of 50.
 
 ```sql
