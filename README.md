@@ -76,7 +76,6 @@ INSERT INTO Title
 -- 3) check bonus table
  select * from bonus;
 
-
  -- Q-1. Write an SQL query to fetch “FIRST_NAME” from Worker table using the alias name as <WORKER_NAME>.
 
  select first_name as WORKER_NAME from worker;
@@ -425,4 +424,4 @@ order by employee_id asc;
 
 ```
 
-Credits: [Tirtha Sharma](https://github.com/genze121 "Tirtha Sharma")
+Credits: 🧑‍💻 [Tirtha Sharma](https://github.com/genze121 "Tirtha Sharma")
